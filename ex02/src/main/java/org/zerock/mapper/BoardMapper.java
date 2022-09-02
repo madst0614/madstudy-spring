@@ -3,10 +3,15 @@ package org.zerock.mapper;
 import java.util.List;
 
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 public interface BoardMapper {
 
 	public List<BoardVO> getList();
+	
+	public int getTotalCount(Criteria cri);
+	
+	public List<BoardVO> getListWithPaging(Criteria cri);
 
 	public void insert(BoardVO board);
 
