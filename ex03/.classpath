@@ -36,5 +36,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/MADST/sqldeveloper/jdbc/lib/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dawoon/Desktop/기타/sqldeveloper/jdbc/lib/ojdbc8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
