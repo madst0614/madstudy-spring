@@ -161,7 +161,7 @@
 												}
 											});
 							console.log(str);
-							uploadUl.append(str);
+							uploadUL.append(str);
 						}
 
 						$("input[type='file']")
@@ -188,7 +188,7 @@
 											}
 
 											$.ajax({
-												url : 'uploadAjaxAction',
+												url : '/uploadAjaxAction',
 												processData : false,
 												contentType : false,
 												data : formData,
