@@ -83,12 +83,53 @@
 
 						var formObj = $("form[role='form']");
 
-						$("button[type='submit']").on("click", function(e) {
+						$("button[type='submit']")
+								.on(
+										"click",
+										function(e) {
 
-							e.preventDefault();
+											e.preventDefault();
 
-							console.log("submit clicked");
-						});
+											console.log("submit clicked");
+
+											var str = "";
+
+											$(".uploadResult ul li")
+													.each(
+															function(i, obj) {
+
+																var jobj = $(obj);
+
+																console
+																		.dir(jobj);
+
+																str += "<input type='hidden' name='attachList["
+																		+ i
+																		+ "].fileName' value='"
+																		+ jobj
+																				.data("filename")
+																		+ "'>";
+																str += "<input type='hidden' name='attachList["
+																		+ i
+																		+ "].uuid' value='"
+																		+ jobj
+																				.data("uuid")
+																		+ "'>";
+																str += "<input type='hidden' name='attachList["
+																		+ i
+																		+ "].uploadPath' value='"
+																		+ jobj
+																				.data("uploadpath")
+																		+ "'>";
+																str += "<input type='hidden' name='attachList["
+																		+ i
+																		+ "].fileType' value='"
+																		+ jobj
+																				.data("type")
+																		+ "'>";
+															});
+											formObj.append(str).submit();
+										});
 
 						var regex = new RegExp("(.*?)\.(exe|sh|zip|akz)$");
 						var maxSize = 5242880;
@@ -131,30 +172,36 @@
 															+ obj.uuid
 															+ "_"
 															+ obj.fileName);
-													str += "<li><div>";
+
+													str += "<li data-path='"+obj.uploadPath+"'";
+													str += " data-uuid='"+obj.uuid+"' data-fileName='"+obj.fileName+"' data-type='" + obj.image+"'";
+													str += "><div>";
 													str += "<span> "
 															+ obj.fileName
 															+ "</span>";
-													str += "<button type = 'button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+													str += "<button type = 'button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 													str += "<img src='/display?fileName="
 															+ fileCallPath
 															+ "'>";
 													str += "</div>";
 													str += "</li>";
 												} else {
-													var fileCallPath = encodeURIComponet(obj.uploadPath
+													var fileCallPath = encodeURIComponent(obj.uploadPath
 															+ "/"
 															+ obj.uuid
 															+ "_"
 															+ obj.fileName);
 													var fileLink = fileCallPath
 															.replace(
-																	new RegExp(/\\/g), "/");
-													str += "<li><div>";
+																	new RegExp(
+																			/\\/g),
+																	"/");
+													str += "<li";
+													str += " data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-fileName='"+obj.fileName+"' data-type='"+obj.image+"' ><div>";
 													str += "<span> "
 															+ obj.fileName
 															+ "</span>";
-													str += "<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+													str += "<button type='button' data-file = \'"+fileCallPath+ "\' data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 													str += "<img src='/resources/img/attach.png'></a>";
 													str += "</div>";
 													str += "</li>";
@@ -201,5 +248,29 @@
 											}); //$.ajax
 										});
 
+						// 첨부파일 삭제
+						$(".uploadResult").on("click", "button", function(e) {
+
+							console.log("delete file");
+
+							var targetFile = $(this).data("file");
+							var type = $(this).data("type");
+
+							var targetLi = $(this).closest("li");
+
+							$.ajax({
+								url : '/deleteFile',
+								data : {
+									fileName : targetFile,
+									type : type
+								},
+								dataType : 'text',
+								type : 'POST',
+								success : function(result) {
+									alert(result);
+									targetLi.remove();
+								}
+							}); //$.ajax
+						});
 					});
 </script>

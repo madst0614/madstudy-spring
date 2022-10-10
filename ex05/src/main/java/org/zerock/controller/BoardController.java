@@ -47,12 +47,18 @@ public class BoardController {
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 
+		log.info("========================");
+
 		log.info("register: " + board);
 
+		if (board.getAttachList() != null) {
+			board.getAttachList().forEach(attach -> log.info(attach));
+		}
+		
 		service.register(board);
-
+		
 		rttr.addFlashAttribute("result", board.getBno());
-
+		
 		return "redirect:/board/list";
 	}
 
@@ -80,7 +86,7 @@ public class BoardController {
 		if (service.remove(bno)) {
 			rttr.addFlashAttribute("result", "success");
 		}
-		
+
 		return "redirect:/board/list" + cri.getListLink();
 	}
 
@@ -88,4 +94,5 @@ public class BoardController {
 	public void register() {
 
 	}
+
 }
