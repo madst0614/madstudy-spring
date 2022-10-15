@@ -119,7 +119,7 @@
 																		+ i
 																		+ "].uploadPath' value='"
 																		+ jobj
-																				.data("uploadpath")
+																				.data("path")
 																		+ "'>";
 																str += "<input type='hidden' name='attachList["
 																		+ i
@@ -131,7 +131,7 @@
 											formObj.append(str).submit();
 										});
 
-						var regex = new RegExp("(.*?)\.(exe|sh|zip|akz)$");
+						var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 						var maxSize = 5242880;
 
 						function checkExtension(fileName, fileSize) {
