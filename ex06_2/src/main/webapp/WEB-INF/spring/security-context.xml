@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 액세스 제한 핸들러 -->
+	<bean id="customAccessDenied"
+		class="org.zerock.security.CustomAccessDeniedHandler"></bean>
+	<!-- 패스워드 암호화 -->
+	<bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	<!-- 커스텀 유저 정보 -->
+	<bean id="CustomUserDetailsService"
+		class="org.zerock.security.CustomUserDetailsService"></bean>
+
+	<security:http auto-config="true">
+		<security:form-login login-page="/customLogin" />
+
+		<security:logout logout-url="/customLogout"
+			invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />
+
+		<security:access-denied-handler
+			ref="customAccessDenied" />
+
+		<security:remember-me
+			data-source-ref="dataSource" token-validity-seconds="604800" />
+
+
+	</security:http>
+
+	<security:authentication-manager>
+
+		<security:authentication-provider
+			user-service-ref="CustomUserDetailsService">
+
+			<security:password-encoder
+				ref="bcryptPasswordEncoder" />
+
+		</security:authentication-provider>
+
+	</security:authentication-manager>
+
+</beans>
